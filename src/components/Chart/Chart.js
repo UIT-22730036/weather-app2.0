@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import {
   minX,
@@ -24,9 +24,8 @@ const Chart = () => {
           <g transform="translate(-70,0)">
             {chartData.map((point) => {
               return point.hour.includes("6:00") ? (
-                <>
+                <Fragment key={point.hour}>
                   <rect
-                    key={point.hour}
                     width={140}
                     height={80}
                     opacity="0.4"
@@ -36,11 +35,10 @@ const Chart = () => {
                   <text x={point.x + 20} y={95}>
                     {point.hour}
                   </text>
-                </>
+                </Fragment>
               ) : (
-                <>
+                <Fragment key={point.hour}>
                   <rect
-                    key={point.hour}
                     width={140}
                     height={80}
                     opacity="0.4"
@@ -50,7 +48,7 @@ const Chart = () => {
                   <text x={point.x + 20} y={175}>
                     {point.hour}
                   </text>
-                </>
+                </Fragment>
               );
             })}
           </g>
@@ -63,6 +61,7 @@ const Chart = () => {
                   width={rect.w}
                   height={rect.h}
                   opacity="0.4"
+                  key={rect.x}
                 />
               );
             })}
