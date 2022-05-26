@@ -25,6 +25,7 @@ test("Should display the weather detail of selected location when users select a
         speed: 4.14,
       },
     });
+  expect.assertions(4);
   // 1st time (default)
   await weatherService
     .getCurrentWeatherInfo("Singapore", mockAxios)
