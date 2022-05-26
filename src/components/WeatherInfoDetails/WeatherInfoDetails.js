@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from "react";
 
+import axios from "axios";
+
 import { ReactComponent as Humidity } from "../../assets/icons/humidity.svg";
 import { ReactComponent as Thermometer } from "../../assets/icons/thermometer.svg";
 
@@ -14,7 +16,7 @@ const WeatherInfoDetails = () => {
   const { city } = useContext(LocationContext);
   const { setWeatherData, weatherData } = useContext(WeatherContext);
   useEffect(() => {
-    weatherService.getCurrentWeatherInfo(city).then((res) => {
+    weatherService.getCurrentWeatherInfo(city, axios).then((res) => {
       setWeatherData(res.data);
     });
   }, [city]);
@@ -23,6 +25,7 @@ const WeatherInfoDetails = () => {
       {weatherData && (
         <>
           <img
+            id="weather-info__icon"
             src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
             alt=""
           />

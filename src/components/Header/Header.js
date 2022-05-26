@@ -18,7 +18,7 @@ const Header = ({ cityName }) => {
       </span>
       <div className="header__select-group">
         <span>myENV</span>
-        <select name="city-name" onChange={changeCityHandler}>
+        <select id="city-name" name="city-name" onChange={changeCityHandler}>
           {cityData.map((city) => (
             <option value={city.value} key={city.name}>
               {city.name}
