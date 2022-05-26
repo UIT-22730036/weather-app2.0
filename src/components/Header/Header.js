@@ -6,7 +6,7 @@ import { LocationContext } from "../../contexts/locationContext";
 
 import "./Header.scss";
 
-const Header = () => {
+const Header = ({ cityName }) => {
   const { setCity } = useContext(LocationContext);
   const changeCityHandler = (e) => {
     setCity(e.target.value);
