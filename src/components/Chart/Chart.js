@@ -19,7 +19,6 @@ const Chart = () => {
   const circleRef = useRef();
   const pathRef = useRef();
   gsap.registerPlugin(MotionPathPlugin, ScrollTrigger);
-
   useEffect(() => {
     positionSunHandler();
     document
@@ -30,17 +29,21 @@ const Chart = () => {
       .removeEventListener("scroll", () => {});
   }, []);
   const positionSunHandler = () => {
+    let chartSVGEl = document.querySelector(".chart__svg");
     let scrollPercentage =
-      (document.querySelector(".chart__svg").scrollLeft +
-        document.querySelector(".chart__svg").scrollLeft) /
-      (document.querySelector(".chart__svg").scrollWidth -
-        document.querySelector(".chart__svg").clientWidth);
-    let path = document.getElementById("motionPath");
-    let pathLength = path.getTotalLength();
-    let pt = path.getPointAtLength(scrollPercentage * pathLength);
-    console.log(scrollPercentage);
+      chartSVGEl.scrollLeft / (chartSVGEl.scrollWidth - minX * 2);
+
+    let rawPath = MotionPathPlugin.getRawPath("#motionPath"),
+      point;
+    MotionPathPlugin.cacheRawPathMeasurements(rawPath);
+    point = MotionPathPlugin.getPositionOnPath(rawPath, scrollPercentage);
     let circle = document.getElementById("circle");
-    circle.setAttribute("transform", `translate(${pt.x},${pt.y})`);
+
+    if (point.x > 0) {
+      circle.setAttribute("transform", `translate(${point.x},${point.y})`);
+    } else {
+      gsap.to("#circle", { x: minX, y: height });
+    }
   };
   return (
     <div className="chart">

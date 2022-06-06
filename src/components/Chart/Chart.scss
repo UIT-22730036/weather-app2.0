@@ -1,9 +1,11 @@
 .chart {
   height: 40vh;
   width: 100vw;
+  position: relative;
   .chart__svg {
     height: 100%;
-    overflow: scroll;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
     img {
       position: absolute;
     }

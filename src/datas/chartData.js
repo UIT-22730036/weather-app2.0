@@ -8,7 +8,7 @@ export const chartData = [
   {
     tide: 0.8,
     hour: "Mon 12:00 pm",
-    morning: -2,
+    morning: 0,
     x: 0,
     sun: 0,
   },
@@ -121,7 +121,23 @@ export const nightTime = [
   },
 ];
 
-export const xData = [
+const yDataMorning = [0, 2, 0, -2, 0, 2, 0, -2, 0, 2, 0];
+
+export const xDataMorning = [
+  minX,
+  minX * 2,
+  minX * 3,
+  minX * 4,
+  minX * 5,
+  minX * 6,
+  minX * 7,
+  minX * 8,
+  minX * 9,
+  minX * 10,
+  minX * 11,
+];
+
+export const xDataTide = [
   0,
   minX,
   minX * 2,
@@ -137,9 +153,9 @@ export const xData = [
   minX * 12,
 ];
 
-export const yDataMorning = chartData.map((item) => item.morning);
+// export const yDataMorning = chartData.map((item) => item.morning);
 
-export const morningPoints = xData.map((x, i) => {
+export const morningPoints = xDataMorning.map((x, i) => {
   return {
     x: x,
     y: height - yDataMorning[i] * 150,
@@ -153,7 +169,7 @@ const morningGen = line()
 
 export const pathOfMorningLine = morningGen(morningPoints);
 
-const tidePoints = xData.map((x, i) => {
+const tidePoints = xDataTide.map((x, i) => {
   return {
     x: x,
     y: height - chartData[i].tide * 100,
