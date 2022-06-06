@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 
 import {
   minX,
@@ -16,8 +16,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./Chart.scss";
 
 const Chart = () => {
-  const circleRef = useRef();
+  const sunRef = useRef();
+  const moonRef = useRef();
   const pathRef = useRef();
+  const [moonIsVisible, setMoonIsVisible] = useState(false);
   gsap.registerPlugin(MotionPathPlugin, ScrollTrigger);
   useEffect(() => {
     positionSunHandler();
@@ -32,18 +34,24 @@ const Chart = () => {
     let chartSVGEl = document.querySelector(".chart__svg");
     let scrollPercentage =
       chartSVGEl.scrollLeft / (chartSVGEl.scrollWidth - minX * 2);
-
     let rawPath = MotionPathPlugin.getRawPath("#motionPath"),
       point;
     MotionPathPlugin.cacheRawPathMeasurements(rawPath);
     point = MotionPathPlugin.getPositionOnPath(rawPath, scrollPercentage);
-    let circle = document.getElementById("circle");
-
+    let sun = document.getElementById("sun");
+    let moon = document.getElementById("moon");
     if (point.x > 0) {
-      circle.setAttribute("transform", `translate(${point.x},${point.y})`);
+      sun.setAttribute("transform", `translate(${point.x},${point.y})`);
     } else {
-      gsap.to("#circle", { x: minX, y: height });
+      gsap.to("#sun", { x: minX, y: height });
     }
+    if (point.y >= 353) {
+      setMoonIsVisible(true);
+    } else {
+      setMoonIsVisible(false);
+    }
+    moon.setAttribute("transform", `translate(${point.x},100)`);
+    console.log(point.y);
   };
   return (
     <div className="chart">
@@ -53,15 +61,34 @@ const Chart = () => {
             <path fill="#c1e5f7" stroke="none" d={pathOfTideLine} />
           </g>
           <g>
-            <circle ref={circleRef} id="circle" fill="orange" r={10}></circle>
-          </g>
-          <g>
             <path
               ref={pathRef}
               fill="none"
               stroke="orange"
               id="motionPath"
               d={pathOfMorningLine}
+            />
+          </g>
+          <g>
+            <circle
+              ref={moonRef}
+              id="moon"
+              fill="#7988A2"
+              r={15}
+              style={{
+                display: `${moonIsVisible ? "block" : "none"}`,
+              }}
+            />
+          </g>
+          <g>
+            <circle
+              ref={sunRef}
+              id="sun"
+              fill="#fcdb33"
+              r={15}
+              style={{
+                display: `${moonIsVisible ? "none" : "block"}`,
+              }}
             />
           </g>
           <g transform="translate(-70,0)">
