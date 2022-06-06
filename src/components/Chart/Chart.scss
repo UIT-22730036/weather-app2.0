@@ -3,8 +3,10 @@
   width: 100vw;
   .chart__svg {
     height: 100%;
-    width: 100%;
     overflow: scroll;
+    img {
+      position: absolute;
+    }
   }
   .chart__title {
     position: fixed;

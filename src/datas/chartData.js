@@ -8,80 +8,93 @@ export const chartData = [
   {
     tide: 0.8,
     hour: "Mon 12:00 pm",
-    sun: 0,
+    morning: -2,
     x: 0,
+    sun: 0,
   },
   {
     tide: 2.1,
     hour: "Mon 6:00 am",
-    sun: 0.001,
+    morning: 0,
     x: minX,
+    sun: 0.001,
   },
   {
     tide: 0.7,
     hour: "Mon 12:00 am",
-    sun: 2,
+    morning: 2,
     x: minX * 2,
+    sun: 2,
   },
   {
     tide: 1.9,
     hour: "Mon 6:00 pm",
-    sun: 0,
+    morning: 0,
     x: minX * 3,
+    sun: 0,
   },
   {
     tide: 0.9,
     hour: "Tue 12:00 pm",
-    sun: 0,
+    morning: -2,
     x: minX * 4,
+    sun: 0,
   },
   {
     tide: 2.1,
     hour: "Tue 6:00 am",
-    sun: 0.001,
+    morning: 0,
     x: minX * 5,
+    sun: 0.001,
   },
   {
     tide: 0.6,
     hour: "Tue 12:00 am",
-    sun: 2,
+    morning: 2,
     x: minX * 6,
+    sun: 2,
   },
   {
     tide: 2.1,
     hour: "Tue 6:00 pm",
-    sun: 0,
+    morning: 0,
     x: minX * 7,
+    sun: 0,
   },
   {
     tide: 0.8,
     hour: "Wed 12:00 pm",
-    sun: 0,
+    morning: -2,
     x: minX * 8,
+    sun: 0,
   },
   {
     tide: 2.3,
     hour: "Wed 6:00 am",
-    sun: 0.001,
+    morning: 0,
     x: minX * 9,
+    sun: 0.001,
   },
   {
     tide: 0.8,
     hour: "Wed 12:00 am",
-    sun: 2,
+    morning: 2,
     x: minX * 10,
+    sun: 2,
   },
   {
     tide: 2.2,
     hour: "Wed 6:00 pm",
-    sun: 0,
+    morning: 0,
     x: minX * 11,
+    sun: 0,
   },
   {
     tide: 0.8,
     hour: "Thur 12:00 pm",
-    sun: 0,
+    morning: -2,
     x: minX * 12,
+    sun: 0,
   },
 ];
 
@@ -124,32 +137,32 @@ export const xData = [
   minX * 12,
 ];
 
-export const yDataSun = chartData.map((item) => item.sun);
+export const yDataMorning = chartData.map((item) => item.morning);
 
-const sunPoints = xData.map((x, i) => {
+export const morningPoints = xData.map((x, i) => {
   return {
-    xpoint: x,
-    ypoint: height - yDataSun[i] * 150,
+    x: x,
+    y: height - yDataMorning[i] * 150,
   };
 });
 
-const sunGen = line()
-  .x((p) => p.xpoint)
-  .y((p) => p.ypoint)
+const morningGen = line()
+  .x((p) => p.x)
+  .y((p) => p.y)
   .curve(curveCardinal);
 
-export const pathOfSunLine = sunGen(sunPoints);
+export const pathOfMorningLine = morningGen(morningPoints);
 
 const tidePoints = xData.map((x, i) => {
   return {
-    xpoint: x,
-    ypoint: height - chartData[i].tide * 100,
+    x: x,
+    y: height - chartData[i].tide * 100,
   };
 });
 
 const tideGen = area()
-  .x((p) => p.xpoint)
-  .y1((p) => p.ypoint)
+  .x((p) => p.x)
+  .y1((p) => p.y)
   .y0(height)
   .curve(curveBasis);
 
