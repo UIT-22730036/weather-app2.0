@@ -157,3 +157,20 @@ const tideGen = area()
   .curve(curveBasis);
 
 export const pathOfTideLine = tideGen(tidePoints);
+
+export const formatTime = (time) => {
+  const fmTime = time % 24;
+  const decimal = fmTime % 1;
+  const hr = Math.floor(fmTime);
+  const min = Math.floor(60 * decimal);
+  if (hr > 12) {
+    return `${hr - 12}:${min > 10 ? "" : "0"}${min} pm`;
+  } else if (hr === 0) {
+    return `${12}:${min > 10 ? "" : "0"}${min} pm`;
+  }
+  return `${hr}:${min > 10 ? "" : "0"}${min} am`;
+};
+
+export const convertScrollToTime = (scrollPercentage) => {
+  return scrollPercentage * 60 + 6;
+};

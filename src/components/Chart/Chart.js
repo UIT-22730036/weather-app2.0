@@ -7,6 +7,8 @@ import {
   chartData,
   nightTime,
   height,
+  formatTime,
+  convertScrollToTime,
 } from "../../datas/chartData";
 
 import { gsap } from "gsap";
@@ -16,16 +18,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./Chart.scss";
 
 const Chart = () => {
-  const sunRef = useRef();
-  const moonRef = useRef();
-  const pathRef = useRef();
   const [moonIsVisible, setMoonIsVisible] = useState(false);
+  const [time, setTime] = useState("");
   gsap.registerPlugin(MotionPathPlugin, ScrollTrigger);
   useEffect(() => {
     positionSunHandler();
-    document
-      .querySelector(".chart__svg")
-      .addEventListener("scroll", positionSunHandler);
+    document.querySelector(".chart__svg").addEventListener("scroll", (e) => {
+      positionSunHandler();
+    });
     return document
       .querySelector(".chart__svg")
       .removeEventListener("scroll", () => {});
@@ -34,6 +34,10 @@ const Chart = () => {
     let chartSVGEl = document.querySelector(".chart__svg");
     let scrollPercentage =
       chartSVGEl.scrollLeft / (chartSVGEl.scrollWidth - minX * 2);
+    if (scrollPercentage > 1) {
+      scrollPercentage = 1;
+    }
+    setTime(formatTime(convertScrollToTime(scrollPercentage)));
     let rawPath = MotionPathPlugin.getRawPath("#motionPath"),
       point;
     MotionPathPlugin.cacheRawPathMeasurements(rawPath);
@@ -51,7 +55,6 @@ const Chart = () => {
       setMoonIsVisible(false);
     }
     moon.setAttribute("transform", `translate(${point.x},100)`);
-    console.log(point.y);
   };
   return (
     <div className="chart">
@@ -62,7 +65,6 @@ const Chart = () => {
           </g>
           <g>
             <path
-              ref={pathRef}
               fill="none"
               stroke="orange"
               id="motionPath"
@@ -71,7 +73,6 @@ const Chart = () => {
           </g>
           <g>
             <circle
-              ref={moonRef}
               id="moon"
               fill="#7988A2"
               r={15}
@@ -82,7 +83,6 @@ const Chart = () => {
           </g>
           <g>
             <circle
-              ref={sunRef}
               id="sun"
               fill="#fcdb33"
               r={15}
@@ -142,6 +142,7 @@ const Chart = () => {
         <span className="chart__title--tide">Tide</span>
         <span className="chart__title--sunset">Sunrise & Sunset</span>
       </div>
+      <span className="chart__time">{time}</span>
     </div>
   );
 };
